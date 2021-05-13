@@ -13,30 +13,62 @@
  * Contact: contacts@castellanidavide.it
  *
  */
-
-// Includes
 #include <bits/stdc++.h>
+#define DEBUG
 using namespace std;
 
-// Variabiles
-int N;
+struct persona
+{
+    int inizio, fine;
+    bool operator < (const persona& other) const
+    {
+        return inizio < other.inizio;
+    }
+};
 
-// Main code
+int N, K, current, sol, tmp;
+vector <persona> persone;
+
 int main()
 {
-  // Cncomment the following lines if you want to read/write from files
-  // freopen("input.txt", "r", stdin);
-  // freopen("output.txt", "w", stdout);
+    freopen("input.txt", "r", stdin);
+#ifndef DEBUG
+    freopen("output.txt", "w", stdout);
+#endif // DEBUG
 
-  // Input
-  cin >> N;
+    cin >> K >> N;
+    persone.resize(N);
+    current = -1;
+    sol = 0;
 
-  // Code
-  // ...
+    for (size_t i = 0; i < N; ++i)
+        cin >> persone[i].inizio >> persone[i].fine;
 
-  // Output
-  cout << N << endl;
+    sort(persone.begin(), persone.end());
 
-  // End
-  return 0;
+#ifdef DEBUG
+    for (size_t i = 0; i < N; ++i)
+        cout << persone[i].inizio << "\t" << persone[i].fine << endl;
+#endif // DEBUG
+
+    while (current < K - 1)
+    {
+        sol++;
+        tmp = current;
+        int i = -1;
+
+        while (persone[++i].inizio <= current + 1)
+            if (persone[i].fine > tmp)
+                tmp = persone[i].fine;
+
+        current = tmp;
+
+#ifdef DEBUG
+        cout << sol << "\t" << current << "\t" << endl;
+#endif // DEBUG
+    }
+
+    cout << sol;
+
+    return 0;
 }
